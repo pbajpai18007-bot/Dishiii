@@ -453,12 +453,8 @@
 </head>
 <body>
 
-  <!-- Background Music Audio with multi-source fallback -->
-  <audio id="bg-audio" loop preload="auto">
-    <source src="khat.mp3" type="audio/mpeg">
-    <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=romantic-ambient-10708.mp3" type="audio/mpeg">
-    <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Connected Directly to your Uploaded khat.mp3 -->
+  <audio id="bg-audio" loop preload="auto" src="khat.mp3"></audio>
 
   <div id="particle-sky"></div>
 
@@ -643,7 +639,7 @@
     </div>
   </div>
 
-  <!-- Persistent Dock Player for "Khat" -->
+  <!-- Persistent Dock Player for Khat -->
   <div class="dock-player">
     <div class="vinyl-disc" id="disc">🎵</div>
     <div class="track-info">
@@ -687,7 +683,7 @@
       openModal("Dishu’s Iconic Hairflip 💁🏻‍♀️✨", "Uff! Yeh hairflip aur ye ada… seedhe dil pe lagti hai! Nobody pulls off confidence & cuteness better than you! 🫶🏻🔥");
     }
 
-    // Audio Controller (Multi-source fallback)
+    // Direct Audio Controller
     let playing = false;
     const audio = document.getElementById('bg-audio');
     const disc = document.getElementById('disc');
@@ -696,26 +692,15 @@
 
     function toggleMusic() {
       if (!playing) {
-        audio.load();
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            playing = true;
-            disc.classList.add('spinning');
-            playBtn.innerText = '⏸';
-            statusText.innerText = 'Now Playing: Khat 🎵';
-          }).catch(err => {
-            console.log("Audio play error:", err);
-            // Fallback online stream
-            audio.src = "https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3";
-            audio.play().then(() => {
-              playing = true;
-              disc.classList.add('spinning');
-              playBtn.innerText = '⏸';
-              statusText.innerText = 'Now Playing: Sweet Vibes ✨';
-            });
-          });
-        }
+        audio.play().then(() => {
+          playing = true;
+          disc.classList.add('spinning');
+          playBtn.innerText = '⏸';
+          statusText.innerText = 'Now Playing: Khat 🎵';
+        }).catch(err => {
+          console.log("Audio play error:", err);
+          alert("Audio file play nahi ho rahi. Check karein ki 'khat.mp3' ka naam exactly yahi hai.");
+        });
       } else {
         audio.pause();
         playing = false;
